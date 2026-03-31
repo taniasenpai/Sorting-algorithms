@@ -83,33 +83,59 @@ def merge_three(arr, left, mid1, mid2, right):
     i = j = k = 0
     index = left
 
-    while i < len(left_arr) or j < len(mid_arr) or k < len(right_arr):
-        min_value = float('inf')
-        min_idx = -1
-
-        if i < len(left_arr) and left_arr[i] < min_value:
-            min_value = left_arr[i]
-            min_idx = 0
-        if j < len(mid_arr) and mid_arr[j] < min_value:
-            min_value = mid_arr[j]
-            min_idx = 1
-        if k < len(right_arr) and right_arr[k] < min_value:
-            min_value = right_arr[k]
-            min_idx = 2
-
-        if min_idx == 0:
+    while i < len(left_arr) and j < len(mid_arr) and k < len(right_arr):
+        if left_arr[i] <= mid_arr[j] and left_arr[i] <= right_arr[k]:
             arr[index] = left_arr[i]
             i += 1
-        elif min_idx == 1:
+        elif mid_arr[j] <= left_arr[i] and mid_arr[j] <= right_arr[k]:
             arr[index] = mid_arr[j]
             j += 1
         else:
             arr[index] = right_arr[k]
             k += 1
-
         index += 1
 
+    while i < len(left_arr) and j < len(mid_arr):
+        if left_arr[i] <= mid_arr[j]:
+            arr[index] = left_arr[i]
+            i += 1
+        else:
+            arr[index] = mid_arr[j]
+            j += 1
+        index += 1
 
+    while j < len(mid_arr) and k < len(right_arr):
+        if mid_arr[j] <= right_arr[k]:
+            arr[index] = mid_arr[j]
+            j += 1
+        else:
+            arr[index] = right_arr[k]
+            k += 1
+        index += 1
+
+    while i < len(left_arr) and k < len(right_arr):
+        if left_arr[i] <= right_arr[k]:
+            arr[index] = left_arr[i]
+            i += 1
+        else:
+            arr[index] = right_arr[k]
+            k += 1
+        index += 1
+
+    while i < len(left_arr):
+        arr[index] = left_arr[i]
+        i += 1
+        index += 1
+
+    while j < len(mid_arr):
+        arr[index] = mid_arr[j]
+        j += 1
+        index += 1
+
+    while k < len(right_arr):
+        arr[index] = right_arr[k]
+        k += 1
+        index += 1
 def three_way_merge_sort(arr):
     a = arr.copy()
 
@@ -396,6 +422,33 @@ def almost_sorted_list(n):
 def few_unique_list(n):
     return [random.randint(0, 10) for _ in range(n)]
 
+def random_float_list(n):
+    return [random.uniform(0, 100000) for _ in range(n)]
+
+
+def sorted_float_list(n):
+    return sorted(random_float_list(n))
+
+
+def reverse_sorted_float_list(n):
+    return sorted(random_float_list(n), reverse=True)
+
+
+def random_string_list(n, length=5):
+    letters = "abcdefghijklmnopqrstuvwxyz"
+    return [
+        ''.join(random.choice(letters) for _ in range(length))
+        for _ in range(n)
+    ]
+
+
+def sorted_string_list(n):
+    return sorted(random_string_list(n))
+
+
+def reverse_sorted_string_list(n):
+    return sorted(random_string_list(n), reverse=True)
+
 
 # -------------------------------
 # Timing Function
@@ -428,14 +481,25 @@ sorting_algorithms = {
 }
 
 data_types = {
+    # integers
     "Random": random_list,
     "Sorted": sorted_list,
     "Reverse": reverse_sorted_list,
     "AlmostSorted": almost_sorted_list,
-    "FewUnique": few_unique_list
+    "FewUnique": few_unique_list,
+
+    # floats
+    "RandomFloat": random_float_list,
+    "SortedFloat": sorted_float_list,
+    "ReverseFloat": reverse_sorted_float_list,
+
+    # strings
+    "RandomString": random_string_list,
+    "SortedString": sorted_string_list,
+    "ReverseString": reverse_sorted_string_list
 }
 
-sizes = [20, 50, 100, 1000, 5000]
+sizes = [20, 50, 100, 1000, 5000, 10000, 50000, 100000]
 
 
 # -------------------------------
@@ -468,8 +532,16 @@ def run_experiments():
                 if algo_name == "Bucket" and dtype_name != "Random":
                     continue
 
-                if algo_name == "Bucket":
+                # Counting & Radix ONLY for integers
+                if algo_name in ["Counting", "Radix"] and "Float" in dtype_name:
                     continue
+                if algo_name in ["Counting", "Radix"] and "String" in dtype_name:
+                    continue
+
+                # Bucket ONLY for floats (optional)
+                if algo_name == "Bucket" and "Float" not in dtype_name:
+                    continue
+
 
                 data_copy = copy.deepcopy(base_data)
                 time_taken = measure_time(algo_func, data_copy)
