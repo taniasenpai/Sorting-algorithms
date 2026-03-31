@@ -1,0 +1,46 @@
+\documentclass{article}
+\usepackage{graphicx} % Required for inserting images
+
+\title{Sorting algorithms experiment results}
+\author{Ungureanu Tania Raisa}
+\date{March 2026}
+
+\begin{document}
+
+\maketitle
+
+\section{Results Analysis}
+
+In this project, the performance of multiple sorting algorithms was analyzed using different types of input data, including random, sorted, reverse sorted, almost sorted, and datasets with few unique values. Additionally, tests were extended to floating-point numbers and strings in order to evaluate algorithm behavior across different data types.
+
+\subsection{General Observations}
+
+The experimental results largely confirm the theoretical time complexities of the algorithms. Algorithms with quadratic complexity, such as Bubble Sort, Insertion Sort, and Selection Sort, performed well only for small input sizes. As the size of the dataset increased, their execution time grew significantly, making them impractical for large inputs.
+
+On the other hand, more efficient algorithms with $\mathcal{O}(n \log n)$ complexity, such as Quick Sort, Merge Sort, Heap Sort, and Timsort, demonstrated much better scalability and handled large datasets efficiently.
+
+\subsection{Algorithm Comparison}
+
+Quick Sort showed very good average performance, especially on random datasets, confirming its efficiency in practice. Merge Sort exhibited stable and predictable performance regardless of input type, as expected from its design.
+
+Timsort performed particularly well on sorted and almost sorted data, due to its adaptive nature. This behavior aligns with its use in real-world applications, including Python's built-in sorting functions.
+
+Heap Sort, although theoretically efficient, showed slower performance compared to Quick Sort and Merge Sort. This can be explained by its frequent memory access patterns and lack of cache efficiency.
+
+\subsection{Special Cases and Deviations}
+
+Some deviations from theoretical expectations were observed. The 3-Way Merge Sort algorithm performed significantly worse than standard Merge Sort. This is due to the additional overhead introduced by splitting the array into three parts and the more complex merging process.
+
+Similarly, Counting Sort and Radix Sort did not outperform comparison-based algorithms as much as expected. This can be attributed to Python's overhead, memory allocation costs, and the relatively small dataset sizes used in the experiments.
+
+\subsection{Data Type Considerations}
+
+The experiments showed that most comparison-based sorting algorithms (such as Quick Sort, Merge Sort, and Timsort) work correctly for integers, floating-point numbers, and strings, as long as the elements are comparable.
+
+However, non-comparison-based algorithms like Counting Sort and Radix Sort are limited to integer data and cannot be directly applied to floating-point numbers or strings.
+
+\subsection{Conclusion}
+
+In conclusion, the experimental results are mostly consistent with theoretical expectations. The choice of sorting algorithm depends on the size and nature of the input data. For practical applications, algorithms such as Timsort and Quick Sort are generally preferred due to their efficiency and adaptability.
+
+\end{document}
